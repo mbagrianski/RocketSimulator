@@ -11,8 +11,9 @@ public interface Operations {
 
     public void launch(long time);
     public void drawRocket(int i, Group group);
-    public ImageView drawFlame(double x, double y) throws FileNotFoundException;
-    public void accelerate();
+    public void drawFlame(Group group);
+    public void motion(double x_shift, double y_shift, double angle, double roll);
+    public void motion(double x_accel, double y_accel);
     public void stage();
     public void setPayload();
 }

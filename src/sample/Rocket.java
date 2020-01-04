@@ -4,27 +4,35 @@ import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 public class Rocket implements Operations {
 
-    protected ImageView currentIMG;
+    private Image flame = new Image(new FileInputStream(
+            "C:\\Users\\mbagr\\IdeaProjects\\RocketSimulator\\src\\sample\\rocket_plume.png"));
+    private ImageView Flame = new ImageView(flame);
+
+    private ImageView currentIMG;
     protected int currentNUM;
-    double rocketX = 0, rocketY = 800;
+
+    double rocketX = 0, rocketY = 800, altitude = 0, velocity = 0;
     double flameX, flameY;
-    String type;
-    int type_num;
+    double rotatedAngle, rollAngle;
+    boolean runthru = false;
 
-    protected long startTime;
-    double accelX, accelY;
-    protected double trajAccel, factor;
+    private String type;
+    private int type_num;
 
-    protected boolean launched = false;
-    protected ImageView[] imageSequence;
+    private long startTime;
 
-    double img_disp_X, img_disp_Y;
+    private boolean launched = true;
+    private ImageView[] imageSequence;
 
-    public Rocket(ImageView imageSequence[]){
+    private double img_disp_X, img_disp_Y;
+
+
+    public Rocket(ImageView imageSequence[]) throws FileNotFoundException {
         this.imageSequence = imageSequence;
     }
 
@@ -39,14 +47,16 @@ public class Rocket implements Operations {
 
     @Override
     public Group Mission(long time, Group group) throws FileNotFoundException {
-        if(launched){
+            velocity+= 0.003;
 
-        }
-        drawRocket(0, group);
-        rocketY--;
+            if (launched) {
+                motion(0, velocity, 0, 0);
+            }
+
+            drawRocket(0, group);
+
         return null;
     }
-
 
     @Override
     public void launch(long time) {
@@ -58,25 +68,37 @@ public class Rocket implements Operations {
 
     @Override
     public void drawRocket(int current, Group group) {
-        this.currentIMG = this.imageSequence[current];
+        currentIMG = imageSequence[current];
 
         img_disp_X = currentIMG.computeAreaInScreen()/currentIMG.getFitHeight();
         img_disp_Y = currentIMG.getFitHeight();
 
         currentIMG.setX(rocketX+currentIMG.getFitWidth());
         currentIMG.setY(rocketY-currentIMG.getFitHeight());
+        currentIMG.setRotate(rotatedAngle);
 
-        group.getChildren().addAll(currentIMG);
+        group.getChildren().add(currentIMG);
     }
 
     @Override
-    public ImageView drawFlame(double x, double y) throws FileNotFoundException {
-        return null;
+    public void drawFlame(Group group) {
+        Flame.setX(rocketX+30);
+        Flame.setY(rocketY);
+        Flame.setFitWidth(50);
+        Flame.setPreserveRatio(true);
+        group.getChildren().add(Flame);
     }
 
     @Override
-    public void accelerate() {
+    public void motion(double x_shift, double y_shift, double angle, double roll) {
+        rocketX += x_shift;
+        rocketY -= y_shift;
+        rotatedAngle += angle;
+        rollAngle += roll;
+    }
 
+    @Override
+    public void motion(double x_accel, double y_accel) {
     }
 
     @Override

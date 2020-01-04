@@ -29,10 +29,6 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-        Image flame = new Image(new FileInputStream("C:\\Users\\mbagr\\IdeaProjects\\RocketSimulator\\src\\sample\\SoyuzTMA.gif"));
-        javafx.scene.image.ImageView Stage1 = new javafx.scene.image.ImageView(flame);
-
-
 
         Group rocketPanel = new Group();
 
@@ -60,7 +56,7 @@ public class Main extends Application {
                 rocketPanel.getChildren().clear();
 
                 try {
-                    soyuz.Mission(elapsedNanoSeconds, rocketPanel);
+                    soyuz.Mission((long) elapsedSeconds, rocketPanel);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
