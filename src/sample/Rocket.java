@@ -10,7 +10,7 @@ import java.io.FileNotFoundException;
 public class Rocket implements Operations {
 
     private Image flame = new Image(new FileInputStream(
-            "C:\\Users\\mbagr\\IdeaProjects\\RocketSimulator\\src\\sample\\rocket_plume.png"));
+            "C:\\Users\\mbagr\\IdeaProjects\\RocketSimulator\\src\\sample\\flame.gif"));
     private ImageView Flame = new ImageView(flame);
 
     private ImageView currentIMG;
@@ -51,6 +51,7 @@ public class Rocket implements Operations {
 
             if (launched) {
                 motion(0, velocity, 0, 0);
+                drawFlame(group);
             }
 
             drawRocket(0, group);

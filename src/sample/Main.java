@@ -29,15 +29,21 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
+        Image flame = new Image(new FileInputStream(
+                "C:\\Users\\mbagr\\IdeaProjects\\RocketSimulator\\src\\sample\\flame.gif"));
+        ImageView Flame = new ImageView(flame);
 
+        Group root = new Group();
         Group rocketPanel = new Group();
+        Group flamePanel = new Group();
 
         primaryStage.setTitle("Rocket Mission Simulator");
 
         Soyuz2_0 soyuz = new Soyuz2_0();
         soyuz.scale();
 
-        Scene scene = new Scene(rocketPanel, width, height);
+        root.getChildren().addAll(rocketPanel, flamePanel);
+        Scene scene = new Scene(root, width, height);
         primaryStage.setScene(scene);
 
         new AnimationTimer() {
