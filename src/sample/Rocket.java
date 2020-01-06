@@ -43,7 +43,7 @@ public class Rocket implements Operations {
 
     private long startTime;
 
-    private boolean launched = true;
+    private boolean launched = false;
     private ImageView[] imageSequence;
     VBox vbox = new VBox();
 
@@ -66,11 +66,12 @@ public class Rocket implements Operations {
     @Override
     public Group Mission(long time, Pane group) throws FileNotFoundException {
         //this.Mission(time, group);
-            velocity+= accelFactor;
+
             drawBackground(time, group);
             if (launched) {
                 motion(0, velocity, rotatedAngle, rollAngle);
                 drawFlame(0, group);
+                velocity+= accelFactor;
             }
             if(time > 10) accelFactor = 0.005;
             drawRocket(currentNUM, group);

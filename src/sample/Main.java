@@ -25,8 +25,10 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-        Group root = new Group();
+        Soyuz2_0 soyuz = new Soyuz2_0();
+        soyuz.scale();
 
+        Group root = new Group();
         HBox hBox = new HBox();
 
         Pane rocketPanel = new Pane();
@@ -35,10 +37,20 @@ public class Main extends Application {
         RocketPanel.getChildren().addAll(rocketPanel);
         RocketPanel.setPrefSize(600, 800);
 
-        primaryStage.setTitle("Rocket Mission Simulator");
+        VBox ButtonPanel = new VBox();
 
-        Soyuz2_0 soyuz = new Soyuz2_0();
-        soyuz.scale();
+        Button launch = new Button("Launch");
+        launch.setPrefSize(100, 50);
+        launch.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent e){
+                System.out.println("Launched");
+                soyuz.launch(0);
+            }
+        });
+        ButtonPanel.getChildren().addAll(launch);
+
+        primaryStage.setTitle("Rocket Mission Simulator");
 
         new AnimationTimer() {
             @Override
@@ -65,7 +77,7 @@ public class Main extends Application {
             }
         }.start();
 
-        hBox.getChildren().addAll(RocketPanel);
+        hBox.getChildren().addAll(RocketPanel, ButtonPanel);
         root.getChildren().addAll(hBox);
         Scene scene = new Scene(root, width, height);
         primaryStage.setScene(scene);
