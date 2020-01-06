@@ -63,6 +63,10 @@ public class Soyuz2_0 extends Rocket {
         Capsule.setPreserveRatio(true);
     }
 
+    public void Mission() {
+
+    }
+
     private static ImageView[] imageSequence = {Stage1, Stage2atm, Stage2trns, Stage3trns, Capsuletrns, Capsule};
 
     public Soyuz2_0() throws FileNotFoundException {

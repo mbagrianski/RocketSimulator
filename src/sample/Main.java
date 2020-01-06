@@ -18,10 +18,6 @@ import java.io.FileNotFoundException;
 
 public class Main extends Application {
     public int width = 1000, height = 800;
-    int panePrefX = 650, panePrefY = 1000;
-
-    double backgroundX = 0, backgroundY = -1330;
-    double a = 0;
 
     private long lastUpdate = 0 ;
     int count = 0;
@@ -29,22 +25,20 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-        Image flame = new Image(new FileInputStream(
-                "C:\\Users\\mbagr\\IdeaProjects\\RocketSimulator\\src\\sample\\flame.gif"));
-        ImageView Flame = new ImageView(flame);
-
         Group root = new Group();
-        Group rocketPanel = new Group();
-        Group flamePanel = new Group();
+
+        HBox hBox = new HBox();
+
+        Pane rocketPanel = new Pane();
+
+        VBox RocketPanel = new VBox();
+        RocketPanel.getChildren().addAll(rocketPanel);
+        RocketPanel.setPrefSize(600, 800);
 
         primaryStage.setTitle("Rocket Mission Simulator");
 
         Soyuz2_0 soyuz = new Soyuz2_0();
         soyuz.scale();
-
-        root.getChildren().addAll(rocketPanel, flamePanel);
-        Scene scene = new Scene(root, width, height);
-        primaryStage.setScene(scene);
 
         new AnimationTimer() {
             @Override
@@ -67,11 +61,14 @@ public class Main extends Application {
                     e.printStackTrace();
                 }
 
-                lastUpdate= now;
 
             }
         }.start();
 
+        hBox.getChildren().addAll(RocketPanel);
+        root.getChildren().addAll(hBox);
+        Scene scene = new Scene(root, width, height);
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 
