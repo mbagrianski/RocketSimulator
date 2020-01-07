@@ -1,10 +1,12 @@
 package sample;
 
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -12,6 +14,15 @@ import java.io.FileNotFoundException;
 public class Rocket implements Operations {
 
     /**public int width = 1000, height = 800; **/
+
+    private Image launchGIF = new Image(new FileInputStream(
+            "C:\\Users\\mbagr\\IdeaProjects\\RocketSimulator\\src\\sample\\launch1.gif"));
+    private ImageView LaunchGIF = new ImageView(launchGIF);
+
+
+    Pane gifA = new Pane();
+    Pane gifB = new Pane();
+
 
     private Image flame = new Image(new FileInputStream(
             "C:\\Users\\mbagr\\IdeaProjects\\RocketSimulator\\src\\sample\\flame.gif"));
@@ -38,12 +49,12 @@ public class Rocket implements Operations {
     double rotatedAngle, rollAngle;
     boolean runthru = false;
 
-    private String type;
+    String type;
     private int type_num;
 
-    private long startTime;
+    private long startTime, elapsedTime;
 
-    private boolean launched = false;
+    boolean launched = false;
     private ImageView[] imageSequence;
     VBox vbox = new VBox();
 
@@ -65,16 +76,38 @@ public class Rocket implements Operations {
 
     @Override
     public Group Mission(long time, Pane group) throws FileNotFoundException {
-        //this.Mission(time, group);
-
+        elapsedTime = time-startTime;
             drawBackground(time, group);
             if (launched) {
                 motion(0, velocity, rotatedAngle, rollAngle);
                 drawFlame(0, group);
                 velocity+= accelFactor;
+
+                if(elapsedTime < 4) setGIFA(LaunchGIF);
+                if (elapsedTime > 4) clearGIFA();
+                if(2 < elapsedTime && elapsedTime < 30) accelFactor = 0.005;
             }
-            if(time > 10) accelFactor = 0.005;
             drawRocket(currentNUM, group);
+        return null;
+    }
+
+    @Override
+    public String getType() {
+        return type;
+    }
+
+    @Override
+    public String getTime() {
+        return null;
+    }
+
+    @Override
+    public String getSpeed() {
+        return String.valueOf(velocity);
+    }
+
+    @Override
+    public String getPos() {
         return null;
     }
 
@@ -122,6 +155,48 @@ public class Rocket implements Operations {
         Background3.setY(backgroundY - 6300 - 6912);
 
         group.getChildren().addAll(Background1, Background2, Background3);
+    }
+
+    @Override
+    public Pane getGIFA() {
+        gifA.setPrefSize(195, 200);
+        gifA.setStyle("-fx-background-color:black");
+        return gifA;
+    }
+
+    @Override
+    public Pane setGIFA(ImageView gif) {
+        gif.setPreserveRatio(true);
+        gif.setFitWidth(195);
+        gifA.getChildren().clear();
+        gifA.getChildren().addAll(gif);
+        return null;
+    }
+
+    @Override
+    public void clearGIFA() {
+        gifA.getChildren().clear();
+    }
+
+    @Override
+    public Pane getGIFB() {
+        gifB.setPrefSize(195, 200);
+        gifB.setStyle("-fx-background-color:black");
+        return gifB;
+    }
+
+    @Override
+    public Pane setGIFB(ImageView gif) {
+        gif.setPreserveRatio(true);
+        gif.setFitWidth(195);
+        gifB.getChildren().clear();
+        gifB.getChildren().addAll(gif);
+        return null;
+    }
+
+    @Override
+    public void clearGIFB() {
+        gifB.getChildren().clear();
     }
 
     @Override
