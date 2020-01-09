@@ -33,13 +33,15 @@ public class Rocket implements Operations {
     private ImageView Background3 = new ImageView(background3);
 
     private ImageView currentIMG;
-    protected int currentNUM;
+    int currentNUM;
 
     double accelFactor = 0.003;
-    double rocketX = 261, rocketY = 600, altitude = 0, velocity = 0;
+    double rocketX = 266, rocketY = 655, altitude = 0, velocity = 0;
     double backgroundX, backgroundY = -6202+800;
     double rotatedAngle, rollAngle;
     boolean runthru = false;
+    
+    double rocketXdisp, rocketYdisp, flameXdisp, flameYdisp;
 
     String type;
     private int type_num;
@@ -101,46 +103,81 @@ public class Rocket implements Operations {
     }
 
     @Override
-    public void drawRocket(int current, Pane group) {
+    public void drawRocket(int current, Pane group) {    	
         currentIMG = imageSequence[current];
-
+        
         img_disp_X = currentIMG.computeAreaInScreen()/currentIMG.getFitHeight();
-        img_disp_Y = currentIMG.getFitHeight();
-
-        currentIMG.setX(rocketX+currentIMG.getFitWidth());
-        currentIMG.setY(rocketY-currentIMG.getFitHeight());
+        img_disp_Y = currentIMG.getFitHeight();            
+         
+        switch(currentNUM) {
+        case 0:
+        	rocketXdisp = 0;
+        	rocketYdisp = 0;
+        	break;
+        case 1:
+        	rocketXdisp = 7;
+        	rocketYdisp = -10;
+        	break;
+        case 3:
+        	rocketXdisp = 7;
+        	rocketYdisp = -135;
+        }
+        currentIMG.setX(rocketX+currentIMG.getFitWidth()+rocketXdisp);
+        currentIMG.setY(rocketY-currentIMG.getFitHeight()+rocketYdisp);
         currentIMG.setRotate(rotatedAngle);
-
         group.getChildren().add(currentIMG);
+        //currentIMG.setX(rocketX+currentIMG.getFitWidth());
+        //currentIMG.setY(rocketY-currentIMG.getFitHeight());
+        //currentIMG.setRotate(rotatedAngle);
+
+        
     }
 
     @Override
     public void drawFlame(int current, Pane group) {
         switch (current){
             case 0:
-                Flame.setX(rocketX - 28);
-                Flame.setY(rocketY - 14);
+            	flameXdisp = -28;
+            	flameYdisp = -14;
+                Flame.setX(rocketX + flameXdisp);
+                Flame.setY(rocketY + flameYdisp);
                 Flame.setFitWidth(125);
                 Flame.setPreserveRatio(true);
-                group.getChildren().add(Flame);
-                return;
+                break;
             case 1:
-                Flame.setX(rocketX - 16);
-                Flame.setY(rocketY - 4);
+            	flameXdisp = -11;
+            	flameYdisp = -14;
+                Flame.setX(rocketX + flameXdisp);
+                Flame.setY(rocketY + flameYdisp);
                 Flame.setFitWidth(130);
-                Flame.setFitHeight(200);
-                group.getChildren().add(Flame);
+                Flame.setFitHeight(200);                
+                break;
+            case 3:
+            	flameXdisp = 4;
+            	flameYdisp = -139;
+            	Flame.setFitWidth(75);
+                Flame.setFitHeight(100);     
+                Flame.setX(rocketX + flameXdisp);
+                Flame.setY(rocketY + flameYdisp);                           
+                break;
         }
+        group.getChildren().add(Flame);
     }
 
     @Override
     public void drawBackground(long time, Pane group) {
         Background1.setX(backgroundX);
         Background1.setY(backgroundY);
+        Background1.setFitWidth(600);
+        Background1.setPreserveRatio(true);
         Background2.setX(backgroundX);
         Background2.setY(backgroundY - 6300);
+        Background2.setFitWidth(600);
+        Background2.setPreserveRatio(true);
         Background3.setX(backgroundX);
         Background3.setY(backgroundY - 6300 - 6912);
+        Background3.setFitWidth(600);
+        Background3.setPreserveRatio(true);
 
         group.getChildren().addAll(Background1, Background2, Background3);
     }
@@ -193,12 +230,13 @@ public class Rocket implements Operations {
             rocketX += x_shift;
             rocketY -= y_shift;
         }
-        if(rocketY <= 400){
+        if(rocketY <= 400 && backgroundY < 6500){
             backgroundX -= x_shift;
             backgroundY += y_shift;
         }
         rotatedAngle += angle;
         rollAngle += roll;
+        System.out.println(backgroundY);
     }
 
     @Override
