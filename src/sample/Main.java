@@ -15,13 +15,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 public class Main extends Application {
-    public int width = 1000, height = 800;
+    public int width = 1004, height = 800;
 
     private long lastUpdate = 0 ;
     int count = 0;
@@ -35,8 +36,10 @@ public class Main extends Application {
 
         Group root = new Group();
         HBox hBox = new HBox();
+        hBox.setSpacing(5);
 
         Pane rocketPanel = new Pane();
+        rocketPanel.setStyle("-fx-background-color:black");
 
         VBox RocketPanel = new VBox();
         RocketPanel.getChildren().addAll(rocketPanel);
@@ -51,7 +54,8 @@ public class Main extends Application {
 
         Label title = new Label();
         title.setPrefSize(400, 40);
-
+        title.setFont(new Font("Arial", 18));
+        title.setStyle("-fx-background-color:lightgray");
 
         Button launch = new Button("Launch");
         launch.setStyle("-fx-background-color:olive");
@@ -123,7 +127,7 @@ public class Main extends Application {
                     }
                 });
 
-                title.setText("Mission control simulation: " + rocket.getType() + " T+ " + rocket.getTime());
+                title.setText(" Mission control simulation: " + rocket.getType() + " T+ " + rocket.getTime());
 
 
                 rocketPanel.getChildren().clear();
