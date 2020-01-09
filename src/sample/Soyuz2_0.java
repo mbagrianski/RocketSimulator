@@ -37,10 +37,10 @@ public class Soyuz2_0 extends Rocket {
         Stage1.setPreserveRatio(true);
         Stage1.setFitHeight(250);
 
-        Stage2atm.setFitHeight(250);
+        Stage2atm.setFitHeight(225);
         Stage2atm.setPreserveRatio(true);
 
-        Stage2trns.setFitHeight(220);
+        Stage2trns.setFitHeight(200);
         Stage2trns.setPreserveRatio(true);
 
         Stage3trns.setFitHeight(75);
@@ -60,15 +60,19 @@ public class Soyuz2_0 extends Rocket {
             elapsedTime = time-startTime;
             motion(0, velocity, rotatedAngle, rollAngle);
 
-            if(elapsedTime > 5 && currentNUM < 1) stage();
-            /**Mission timeline goes here**/
+            if(elapsedTime > 30 && currentNUM < 1) stage();
+            if(elapsedTime > 45 && currentNUM < 2) stage();
+            if(elapsedTime > 60 && currentNUM < 3) stage();
+            
 
+            
+            /**Mission timeline goes here**/
+            
 
 
 
             drawFlame(currentNUM, group);
             velocity+= accelFactor;
-            System.out.println(elapsedTime);
         }
         drawRocket(currentNUM, group);
         return null;
