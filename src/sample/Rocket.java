@@ -1,12 +1,10 @@
 package sample;
 
-import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -15,8 +13,7 @@ public class Rocket implements Operations {
 
     /**public int width = 1000, height = 800; **/
 
-    private Image launchGIF = new Image(new FileInputStream(
-            "C:\\Users\\mbagr\\IdeaProjects\\RocketSimulator\\src\\sample\\launch1.gif"));
+    private Image launchGIF = new Image("sample/GIF/launch1.gif");
     private ImageView LaunchGIF = new ImageView(launchGIF);
 
 
@@ -24,20 +21,16 @@ public class Rocket implements Operations {
     Pane gifB = new Pane();
 
 
-    private Image flame = new Image(new FileInputStream(
-            "C:\\Users\\mbagr\\IdeaProjects\\RocketSimulator\\src\\sample\\flame.gif"));
+    private Image flame = new Image("sample/GIF/flame.gif");
     private ImageView Flame = new ImageView(flame);
 
-    private Image background1 = new Image(new FileInputStream(
-            "C:\\Users\\mbagr\\IdeaProjects\\RocketSimulator\\src\\sample\\backgroundImages\\launchpad.png"));
+    private Image background1 = new Image("sample/backgroundImages/launchpad.png");
     private ImageView Background1 = new ImageView(background1);
 
-    private Image background2 = new Image(new FileInputStream(
-            "C:\\Users\\mbagr\\IdeaProjects\\RocketSimulator\\src\\sample\\backgroundImages\\pad_2.png"));
+    private Image background2 = new Image("sample/backgroundImages/pad_2.png");
     private ImageView Background2 = new ImageView(background2);
 
-    private Image background3 = new Image(new FileInputStream(
-            "C:\\Users\\mbagr\\IdeaProjects\\RocketSimulator\\src\\sample\\backgroundImages\\pad_3.png"));
+    private Image background3 = new Image("sample/backgroundImages/pad_3.png");
     private ImageView Background3 = new ImageView(background3);
 
     private ImageView currentIMG;

@@ -9,24 +9,12 @@ import java.io.FileNotFoundException;
 
 public class Soyuz2_0 extends Rocket {
     static {
-        try {
-            stage1 = new Image(new FileInputStream(
-                    "C:\\Users\\mbagr\\IdeaProjects\\RocketSimulator\\src\\sample\\soyuzImages\\soyuz_stage1.png"));
-            stage2atm = new Image(new FileInputStream(
-                    "C:\\Users\\mbagr\\IdeaProjects\\RocketSimulator\\src\\sample\\soyuzImages\\soyuz_stage2_atm.png"));
-            stage2trns = new Image(new FileInputStream(
-                    "C:\\Users\\mbagr\\IdeaProjects\\RocketSimulator\\src\\sample\\soyuzImages\\soyuz_stage2_transfer.png"));
-            stage3trns = new Image(new FileInputStream(
-                        "C:\\Users\\mbagr\\IdeaProjects\\RocketSimulator\\src\\sample\\soyuzImages\\soyuz_stage3_transfer.png"));
-            capsuletrns = new Image(new FileInputStream(
-                    "C:\\Users\\mbagr\\IdeaProjects\\RocketSimulator\\src\\sample\\soyuzImages\\soyuz_capsule_transfer.png"));
-            capsule = new Image(new FileInputStream(
-                    "C:\\Users\\mbagr\\IdeaProjects\\RocketSimulator\\src\\sample\\soyuzImages\\soyuz_capsule.png"));
-            flame = new Image(new FileInputStream(
-                    "C:\\Users\\mbagr\\IdeaProjects\\RocketSimulator\\src\\sample\\flame.gif"));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        stage1 = new Image("sample/soyuzImages/soyuz_stage1.png");
+        stage2atm = new Image("sample/soyuzImages/soyuz_stage2_atm.png");
+        stage2trns = new Image("sample/soyuzImages/soyuz_stage2_transfer.png");
+        stage3trns = new Image("sample/soyuzImages/soyuz_stage3_transfer.png");
+        capsuletrns = new Image("sample/soyuzImages/soyuz_capsule_transfer.png");
+        capsule = new Image("sample/soyuzImages/soyuz_capsule.png");
     }
 
     static Image stage1;
@@ -35,7 +23,6 @@ public class Soyuz2_0 extends Rocket {
     static Image stage2trns;
     static Image capsuletrns;
     static Image capsule;
-    static Image flame;
 
     private static ImageView Stage1 = new ImageView(stage1);
     private static ImageView Stage2atm = new ImageView(stage2atm);
