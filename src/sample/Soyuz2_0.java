@@ -1,7 +1,9 @@
 package sample;
 
+import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 
 import java.awt.*;
 import java.io.FileInputStream;
@@ -51,7 +53,26 @@ public class Soyuz2_0 extends Rocket {
         Capsule.setPreserveRatio(true);
     }
 
+    public Group Mission(long time, Pane group) throws FileNotFoundException {
+        drawBackground(time, group);
 
+        if (launched) {
+            elapsedTime = time-startTime;
+            motion(0, velocity, rotatedAngle, rollAngle);
+
+            if(elapsedTime > 5 && currentNUM < 1) stage();
+            /**Mission timeline goes here**/
+
+
+
+
+            drawFlame(currentNUM, group);
+            velocity+= accelFactor;
+            System.out.println(elapsedTime);
+        }
+        drawRocket(currentNUM, group);
+        return null;
+    }
 
     private static ImageView[] imageSequence = {Stage1, Stage2atm, Stage2trns, Stage3trns, Capsuletrns, Capsule};
 

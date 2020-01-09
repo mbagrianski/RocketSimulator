@@ -6,15 +6,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 public class Rocket implements Operations {
 
     /**public int width = 1000, height = 800; **/
 
-    private Image launchGIF = new Image("sample/GIF/launch1.gif");
-    private ImageView LaunchGIF = new ImageView(launchGIF);
+    Image launchGIF = new Image("sample/GIF/launch1.gif");
+    ImageView LaunchGIF = new ImageView(launchGIF);
 
 
     Pane gifA = new Pane();
@@ -45,7 +44,7 @@ public class Rocket implements Operations {
     String type;
     private int type_num;
 
-    private long startTime, elapsedTime;
+    long startTime, elapsedTime;
 
     boolean launched = false;
     private ImageView[] imageSequence;
@@ -69,18 +68,7 @@ public class Rocket implements Operations {
 
     @Override
     public Group Mission(long time, Pane group) throws FileNotFoundException {
-        elapsedTime = time-startTime;
-            drawBackground(time, group);
-            if (launched) {
-                motion(0, velocity, rotatedAngle, rollAngle);
-                drawFlame(0, group);
-                velocity+= accelFactor;
-
-                if(elapsedTime < 4) setGIFA(LaunchGIF);
-                if (elapsedTime > 4) clearGIFA();
-                if(2 < elapsedTime && elapsedTime < 30) accelFactor = 0.005;
-            }
-            drawRocket(currentNUM, group);
+        this.Mission(time, group);
         return null;
     }
 
@@ -90,13 +78,13 @@ public class Rocket implements Operations {
     }
 
     @Override
-    public String getTime() {
-        return null;
+    public long getTime() {
+        return elapsedTime;
     }
 
     @Override
-    public String getSpeed() {
-        return String.valueOf(velocity);
+    public double getSpeed() {
+        return velocity;
     }
 
     @Override
@@ -107,8 +95,8 @@ public class Rocket implements Operations {
     @Override
     public void launch(long time) {
         if(!launched){
-            this.launched = true;
-            this.startTime = time;
+            launched = true;
+            startTime = time;
         }
     }
 
@@ -134,6 +122,13 @@ public class Rocket implements Operations {
                 Flame.setY(rocketY - 14);
                 Flame.setFitWidth(125);
                 Flame.setPreserveRatio(true);
+                group.getChildren().add(Flame);
+                return;
+            case 1:
+                Flame.setX(rocketX - 16);
+                Flame.setY(rocketY - 4);
+                Flame.setFitWidth(130);
+                Flame.setFitHeight(200);
                 group.getChildren().add(Flame);
         }
     }
@@ -213,6 +208,11 @@ public class Rocket implements Operations {
     @Override
     public void stage() {
         currentNUM++;
+        switch (currentNUM){
+            case 1:
+                rocketX += 15;
+
+        }
     }
 
     @Override

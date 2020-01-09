@@ -49,20 +49,14 @@ public class Main extends Application {
         HBox rowC = new HBox();
         HBox rowD = new HBox();
 
-        Label title = new Label("Mission control simulation: " + rocket.getType());
+        Label title = new Label();
         title.setPrefSize(400, 40);
 
 
         Button launch = new Button("Launch");
         launch.setStyle("-fx-background-color:olive");
         launch.setPrefSize(100, 50);
-        launch.setOnAction(new EventHandler<ActionEvent>(){
-            @Override
-            public void handle(ActionEvent e){
-                System.out.println("Launched");
-                rocket.launch(0);
-            }
-        });
+
         Button clusterA = new Button("ClusterA");
         clusterA.setPrefSize(70, 50);
         Button clusterB = new Button("ClusterB");
@@ -119,6 +113,18 @@ public class Main extends Application {
             public void handle(long now) {
                 long elapsedNanoSeconds = now - lastUpdate;
                 double elapsedSeconds = elapsedNanoSeconds / 1_000_000_000.0;
+
+
+                launch.setOnAction(new EventHandler<ActionEvent>(){
+                    @Override
+                    public void handle(ActionEvent e){
+                        System.out.println("Launched");
+                        rocket.launch((long) elapsedSeconds);
+                    }
+                });
+
+                title.setText("Mission control simulation: " + rocket.getType() + " T+ " + rocket.getTime());
+
 
                 rocketPanel.getChildren().clear();
 
