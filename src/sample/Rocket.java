@@ -20,8 +20,8 @@ public class Rocket implements Operations {
     Pane gifB = new Pane();
 
 
-    private Image flame = new Image("sample/GIF/flame.gif");
-    private ImageView Flame = new ImageView(flame);
+    Image flame = new Image("sample/GIF/flame.gif");
+    ImageView Flame = new ImageView(flame);
 
     private Image background1 = new Image("sample/backgroundImages/launchpad.png");
     private ImageView Background1 = new ImageView(background1);
@@ -135,33 +135,7 @@ public class Rocket implements Operations {
 
     @Override
     public void drawFlame(int current, Pane group) {
-        switch (current){
-            case 0:
-            	flameXdisp = -28;
-            	flameYdisp = -14;
-                Flame.setX(rocketX + flameXdisp);
-                Flame.setY(rocketY + flameYdisp);
-                Flame.setFitWidth(125);
-                Flame.setPreserveRatio(true);
-                break;
-            case 1:
-            	flameXdisp = -11;
-            	flameYdisp = -14;
-                Flame.setX(rocketX + flameXdisp);
-                Flame.setY(rocketY + flameYdisp);
-                Flame.setFitWidth(130);
-                Flame.setFitHeight(200);                
-                break;
-            case 3:
-            	flameXdisp = 4;
-            	flameYdisp = -139;
-            	Flame.setFitWidth(75);
-                Flame.setFitHeight(100);     
-                Flame.setX(rocketX + flameXdisp);
-                Flame.setY(rocketY + flameYdisp);                           
-                break;
-        }
-        group.getChildren().add(Flame);
+        this.drawFlame(current, group);
     }
 
     @Override
@@ -171,11 +145,11 @@ public class Rocket implements Operations {
         Background1.setFitWidth(600);
         Background1.setPreserveRatio(true);
         Background2.setX(backgroundX);
-        Background2.setY(backgroundY - 6300);
+        Background2.setY(backgroundY - 60000);
         Background2.setFitWidth(600);
-        Background2.setPreserveRatio(true);
+        Background2.setFitHeight(60000);
         Background3.setX(backgroundX);
-        Background3.setY(backgroundY - 6300 - 6912);
+        Background3.setY(backgroundY - 60010 - 6912);
         Background3.setFitWidth(600);
         Background3.setPreserveRatio(true);
 
@@ -185,7 +159,7 @@ public class Rocket implements Operations {
     @Override
     public Pane getGIFA() {
         gifA.setPrefSize(195, 200);
-        gifA.setStyle("-fx-background-color:black");
+        gifA.setStyle("-fx-background-color:darkgray");
         return gifA;
     }
 
@@ -230,7 +204,7 @@ public class Rocket implements Operations {
             rocketX += x_shift;
             rocketY -= y_shift;
         }
-        if(rocketY <= 400 && backgroundY < 6500){
+        if(rocketY <= 400 && backgroundY < 67000){
             backgroundX -= x_shift;
             backgroundY += y_shift;
         }
