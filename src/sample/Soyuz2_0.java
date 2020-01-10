@@ -60,22 +60,50 @@ public class Soyuz2_0 extends Rocket {
             elapsedTime = time-startTime;
             motion(0, velocity, rotatedAngle, rollAngle);
 
-            if(elapsedTime > 30 && currentNUM < 1) stage();
-            if(elapsedTime > 45 && currentNUM < 2) stage();
-            if(elapsedTime > 60 && currentNUM < 3) stage();
+            if(elapsedTime > 15) accelFactor = 0.01;
+            if(elapsedTime > 70 && currentNUM < 1) stage();
+            if(elapsedTime > 120 && currentNUM < 2) stage();
+            if(elapsedTime > 150 && currentNUM < 3) stage();        
             
-
-            
-            /**Mission timeline goes here**/
-            
-
-
+            /**Mission timeline goes here**/        
 
             drawFlame(currentNUM, group);
             velocity+= accelFactor;
         }
         drawRocket(currentNUM, group);
         return null;
+    }
+    
+    
+    @Override
+    public void drawFlame(int current, Pane group) {
+        switch (current){
+            case 0:
+            	flameXdisp = -28;
+            	flameYdisp = -14;
+                Flame.setX(rocketX + flameXdisp);
+                Flame.setY(rocketY + flameYdisp);
+                Flame.setFitWidth(125);
+                Flame.setPreserveRatio(true);
+                break;
+            case 1:
+            	flameXdisp = -11;
+            	flameYdisp = -14;
+                Flame.setX(rocketX + flameXdisp);
+                Flame.setY(rocketY + flameYdisp);
+                Flame.setFitWidth(130);
+                Flame.setFitHeight(200);                
+                break;
+            case 3:
+            	flameXdisp = 4;
+            	flameYdisp = -136;
+            	Flame.setFitWidth(75);
+                Flame.setFitHeight(100);     
+                Flame.setX(rocketX + flameXdisp);
+                Flame.setY(rocketY + flameYdisp);                           
+                break;
+        }
+        group.getChildren().add(Flame);
     }
 
     private static ImageView[] imageSequence = {Stage1, Stage2atm, Stage2trns, Stage3trns, Capsuletrns, Capsule};
