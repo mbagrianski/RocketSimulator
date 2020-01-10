@@ -15,6 +15,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -53,10 +54,23 @@ public class Main extends Application {
         HBox rowD = new HBox();
 
         Label title = new Label();
-        title.setPrefSize(400, 40);
+        title.setPrefSize(395, 40);
         title.setFont(new Font("Arial", 18));
         title.setStyle("-fx-background-color:lightgray");
 
+        Pane stats1 = new Pane();
+        stats1.setPrefSize(240, 240);
+        stats1.setStyle("-fx-background-color:darkgray");
+        Pane stats2 = new Pane();
+        stats2.setPrefSize(150, 240);
+        stats2.setStyle("-fx-background-color:darkgray");
+        Circle circle = new Circle();
+        circle.setCenterX(75);
+        circle.setCenterY(75);
+        circle.setRadius(50);
+
+        stats2.getChildren().addAll(circle);
+        
         Button launch = new Button("Launch");
         launch.setStyle("-fx-background-color:olive");
         launch.setPrefSize(100, 50);
@@ -70,8 +84,8 @@ public class Main extends Application {
         Button clusterD = new Button("ClusterD");
         clusterD.setPrefSize(70, 50);
 
-        rowA.getChildren().addAll(launch, clusterA, clusterB, clusterC, clusterD);
-        rowA.setSpacing(4);
+        rowA.getChildren().addAll(stats1, stats2);
+        rowA.setSpacing(5);
         rowA.setPadding(new Insets(4, 0, 4, 0));
 
         Button abort = new Button("ABORT");
@@ -88,17 +102,20 @@ public class Main extends Application {
 
         rowB.getChildren().addAll(abort, statusA, statusB, statusC, statusD);
         rowB.setSpacing(4);
-
+        
         Slider throttle = new Slider(0, 100, 0);
+        throttle.setScaleX(1.5);
+        throttle.setScaleY(1.5);
+        throttle.setPrefSize(100, 100);
         throttle.setMajorTickUnit(10);
         throttle.setShowTickLabels(true);
         throttle.setOrientation(Orientation.VERTICAL);
 
         rowC.getChildren().addAll(throttle);
-        rowC.setPadding(new Insets(10, 0, 10, 5));
+        rowC.setPadding(new Insets(40, 0, 40, 0));
         rowC.setSpacing(5);
 
-        rowD.getChildren().addAll(rocket.getGIFA(), rocket.getGIFB());
+        //rowD.getChildren().addAll(rocket.getGIFA(), rocket.getGIFB());
         rowD.setSpacing(5);
 
         ButtonPanel.getChildren().addAll(title, rowA, rowB, rowC, rowD);
@@ -143,7 +160,7 @@ public class Main extends Application {
         }.start();
 
         hBox.getChildren().addAll(RocketPanel, ButtonPanel);
-        hBox.setStyle("-fx-background-color:gray");
+        hBox.setStyle("-fx-background-color:black");
         hBox.setPrefSize(width, height);
         root.getChildren().addAll(hBox);
         Scene scene = new Scene(root, width, height);
