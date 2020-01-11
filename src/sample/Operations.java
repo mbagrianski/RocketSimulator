@@ -27,6 +27,8 @@ public interface Operations {
     public Pane setGIFB(ImageView gif);
     public void clearGIFB();
 
+
+
     public void motion(double x_shift, double y_shift, double angle, double roll);
     public void motion(double x_accel, double y_accel);
     public void stage();
