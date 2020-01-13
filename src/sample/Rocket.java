@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 public class Rocket implements Operations {
 
     /**public int width = 1000, height = 800; **/
+    double throttleVal = 1;
 
     Image launchGIF = new Image("sample/GIF/launch1.gif");
     ImageView LaunchGIF = new ImageView(launchGIF);
@@ -35,7 +36,7 @@ public class Rocket implements Operations {
     private ImageView currentIMG;
     int currentNUM;
 
-    double accelFactor = 0.003;
+    double accelFactor;
     double rocketX = 266, rocketY = 655, altitude = 0, velocity = 0;
     double backgroundX, backgroundY = -6202+800;
     double rotatedAngle, rollAngle;
@@ -80,18 +81,23 @@ public class Rocket implements Operations {
     }
 
     @Override
-    public long getTime() {
-        return elapsedTime;
+    public double getTime() {
+        return (Math.round(elapsedTime*100.0)/100.0);
     }
 
     @Override
-    public double getSpeed() {
-        return velocity;
+    public double getSpeed() { //return velocity in m/s
+        return Math.round(velocity*20000.0*0.195)/100.0; //convert to approximate scale speed (m/s)
     }
 
     @Override
     public String getPos() {
         return null;
+    }
+
+    @Override
+    public double getAccel() {
+        return Math.round(accelFactor*20000.0*0.195)/100.0;
     }
 
     @Override
@@ -145,11 +151,11 @@ public class Rocket implements Operations {
         Background1.setFitWidth(600);
         Background1.setPreserveRatio(true);
         Background2.setX(backgroundX);
-        Background2.setY(backgroundY - 60000);
+        Background2.setY(backgroundY - 120000);
         Background2.setFitWidth(600);
-        Background2.setFitHeight(60000);
+        Background2.setFitHeight(120000);
         Background3.setX(backgroundX);
-        Background3.setY(backgroundY - 60010 - 6912);
+        Background3.setY(backgroundY - 120010 - 6912);
         Background3.setFitWidth(600);
         Background3.setPreserveRatio(true);
 
@@ -204,7 +210,7 @@ public class Rocket implements Operations {
             rocketX += x_shift;
             rocketY -= y_shift;
         }
-        if(rocketY <= 400 && backgroundY < 67000){
+        if(rocketY <= 400 && backgroundY < 127000){
             backgroundX -= x_shift;
             backgroundY += y_shift;
         }

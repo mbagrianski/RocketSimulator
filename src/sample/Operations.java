@@ -11,9 +11,11 @@ public interface Operations {
     public Group Mission(long time, Pane group) throws FileNotFoundException;
 
     public String getType();
-    public long getTime();
+    public double getTime();
     public double getSpeed();
     public String getPos();
+    public double getAccel();
+
 
     public void launch(long time);
     public void drawRocket(int stage, Pane group);

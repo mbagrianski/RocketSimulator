@@ -16,6 +16,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -58,9 +59,33 @@ public class Main extends Application {
         title.setFont(new Font("Arial", 18));
         title.setStyle("-fx-background-color:lightgray");
 
+        Label Velocity = new Label();
+        Velocity.setPrefSize(230, 10);
+        Velocity.setFont(new Font("Arial", 12));
+        Velocity.setPadding(new Insets(0, 0, 0, 5));
+
+        Label Acceleration = new Label();
+        Acceleration.setPrefSize(230, 10);
+        Acceleration.setFont(new Font("Arial", 12));
+        Acceleration.setPadding(new Insets(0, 0, 0, 5));
+
+        Label Pitch = new Label();
+        Pitch.setPrefSize(230, 10);
+        Pitch.setFont(new Font("Arial", 12));
+        Pitch.setPadding(new Insets(0, 0, 0, 5));
+
+        Label Roll = new Label();
+        Roll.setPrefSize(230, 10);
+        Roll.setFont(new Font("Arial", 12));
+        Roll.setPadding(new Insets(0, 0, 0, 5));
+
+        VBox labels = new VBox(Velocity, Acceleration, Pitch, Roll);
+        labels.setSpacing(5);
+
         Pane stats1 = new Pane();
         stats1.setPrefSize(240, 240);
         stats1.setStyle("-fx-background-color:darkgray");
+
         Pane stats2 = new Pane();
         stats2.setPrefSize(150, 240);
         stats2.setStyle("-fx-background-color:darkgray");
@@ -68,21 +93,27 @@ public class Main extends Application {
         circle.setCenterX(75);
         circle.setCenterY(75);
         circle.setRadius(50);
+        Line rollOffset = new Line(75, 75, 75, 25);
+        rollOffset.setStroke(Color.RED);
 
-        stats2.getChildren().addAll(circle);
-        
+        stats1.getChildren().addAll(labels);
+        stats2.getChildren().addAll(circle, rollOffset);
+
         Button launch = new Button("Launch");
         launch.setStyle("-fx-background-color:olive");
         launch.setPrefSize(100, 50);
 
-        Button clusterA = new Button("ClusterA");
-        clusterA.setPrefSize(70, 50);
-        Button clusterB = new Button("ClusterB");
-        clusterB.setPrefSize(70, 50);
-        Button clusterC = new Button("ClusterC");
-        clusterC.setPrefSize(70, 50);
-        Button clusterD = new Button("ClusterD");
-        clusterD.setPrefSize(70, 50);
+        VBox clusters = new VBox();
+        clusters.setSpacing(5);
+        Button[] cluster = new Button[6];
+        for(int i = 0; i< cluster.length; i++){
+            cluster[i] = new Button();
+            cluster[i].setPrefSize(50, 20);
+            cluster[i].setText(String.valueOf(i+1));
+            cluster[i].setStyle("-fx-background-color:green");
+            clusters.getChildren().addAll(cluster[i]);
+
+        }
 
         rowA.getChildren().addAll(stats1, stats2);
         rowA.setSpacing(5);
@@ -100,25 +131,34 @@ public class Main extends Application {
         Button statusD = new Button("statusD");
         statusD.setPrefSize(70, 50);
 
-        rowB.getChildren().addAll(abort, statusA, statusB, statusC, statusD);
+        rowB.getChildren().addAll(launch, statusA, statusB, statusC, statusD);
         rowB.setSpacing(4);
-        
-        Slider throttle = new Slider(0, 100, 0);
-        throttle.setScaleX(1.5);
-        throttle.setScaleY(1.5);
-        throttle.setPrefSize(100, 100);
+
+
+        Slider throttle = new Slider(0, 100, 50);
+        throttle.setPrefSize(50, 150);
         throttle.setMajorTickUnit(10);
         throttle.setShowTickLabels(true);
         throttle.setOrientation(Orientation.VERTICAL);
+        throttle.setSnapToTicks(true);
 
-        rowC.getChildren().addAll(throttle);
-        rowC.setPadding(new Insets(40, 0, 40, 0));
+        Label thLabel = new Label("Throttle");
+        thLabel.setPrefSize(50, 10);
+        thLabel.setFont(new Font("Arial", 12));
+
+        VBox Throttle = new VBox(thLabel, throttle);
+        Throttle.setSpacing(5);
+
+
+        rowC.getChildren().addAll(Throttle, clusters);
         rowC.setSpacing(5);
+
 
         //rowD.getChildren().addAll(rocket.getGIFA(), rocket.getGIFB());
         rowD.setSpacing(5);
 
         ButtonPanel.getChildren().addAll(title, rowA, rowB, rowC, rowD);
+        ButtonPanel.setSpacing(5);
 
         primaryStage.setTitle("Rocket Mission Simulator");
 
@@ -135,18 +175,31 @@ public class Main extends Application {
                 long elapsedNanoSeconds = now - lastUpdate;
                 double elapsedSeconds = elapsedNanoSeconds / 1_000_000_000.0;
 
+                rocket.accelFactor = throttle.getValue() / 10000 - 1/200.0;
 
                 launch.setOnAction(new EventHandler<ActionEvent>(){
                     @Override
                     public void handle(ActionEvent e){
                         System.out.println("Launched");
                         rocket.launch((long) elapsedSeconds);
+                        throttle.setValue(75);
                     }
                 });
 
                 title.setText(" Mission control simulation: " + rocket.getType() + " T+ " + rocket.getTime());
-
-
+                Velocity.setText("Velocity: "+ rocket.getSpeed()+" m/s");
+                Acceleration.setText("Acceleration: "+ rocket.getAccel() * 49+" m/s^2");
+                Pitch.setText("Pitch: "+ rocket.rotatedAngle +" deg");
+                Roll.setText("Roll: "+ rocket.rollAngle +" deg");
+                for(int i = 0; i< cluster.length; i++){
+                    int finalI = i;
+                    cluster[i].setOnAction(new EventHandler<ActionEvent>(){
+                        @Override
+                        public void handle(ActionEvent e){
+                            cluster[finalI].setStyle("-fx-background-color:tomato");
+                        }
+                    });
+                }
                 rocketPanel.getChildren().clear();
 
                 try {
@@ -167,6 +220,9 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+
+
+
 
     public static void main(String[] args) {
         launch(args);

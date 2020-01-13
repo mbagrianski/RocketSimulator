@@ -54,21 +54,22 @@ public class Soyuz2_0 extends Rocket {
     }
 
     public Group Mission(long time, Pane group) throws FileNotFoundException {
+        double atmosphere = 1;
         drawBackground(time, group);
 
         if (launched) {
             elapsedTime = time-startTime;
-            motion(0, velocity, rotatedAngle, rollAngle);
+            motion(0, velocity*atmosphere, rotatedAngle, rollAngle);
+            if(elapsedTime > 40) atmosphere = time*time / (10.0 * time);
 
-            if(elapsedTime > 15) accelFactor = 0.01;
             if(elapsedTime > 70 && currentNUM < 1) stage();
             if(elapsedTime > 120 && currentNUM < 2) stage();
             if(elapsedTime > 150 && currentNUM < 3) stage();        
             
-            /**Mission timeline goes here**/        
+            /**Mission timeline goes here**/
 
             drawFlame(currentNUM, group);
-            velocity+= accelFactor;
+            velocity+= accelFactor*atmosphere;
         }
         drawRocket(currentNUM, group);
         return null;
@@ -77,6 +78,7 @@ public class Soyuz2_0 extends Rocket {
     
     @Override
     public void drawFlame(int current, Pane group) {
+
         switch (current){
             case 0:
             	flameXdisp = -28;
@@ -92,13 +94,13 @@ public class Soyuz2_0 extends Rocket {
                 Flame.setX(rocketX + flameXdisp);
                 Flame.setY(rocketY + flameYdisp);
                 Flame.setFitWidth(130);
-                Flame.setFitHeight(200);                
+                Flame.setFitHeight(200);
                 break;
             case 3:
             	flameXdisp = 4;
             	flameYdisp = -136;
             	Flame.setFitWidth(75);
-                Flame.setFitHeight(100);     
+                Flame.setFitHeight(100);
                 Flame.setX(rocketX + flameXdisp);
                 Flame.setY(rocketY + flameYdisp);                           
                 break;
