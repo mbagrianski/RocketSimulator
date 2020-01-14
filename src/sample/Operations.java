@@ -21,6 +21,7 @@ public interface Operations {
     public void drawRocket(int stage, Pane group);
     public void drawFlame(int stage, Pane group);
     public void drawBackground(long time, Pane group);
+    
     public Pane getGIFA();
     public Pane setGIFA(ImageView gif);
     public void clearGIFA();
@@ -28,6 +29,8 @@ public interface Operations {
     public Pane getGIFB();
     public Pane setGIFB(ImageView gif);
     public void clearGIFB();
+    
+    public void crash(Pane group);
 
 
 
