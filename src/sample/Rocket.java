@@ -5,6 +5,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.FileNotFoundException;
 
@@ -12,6 +14,7 @@ public class Rocket implements Operations {
 
     /**public int width = 1000, height = 800; **/
     double throttleVal = 1;
+    String logUpdate;
 
     Image launchGIF = new Image("sample/GIF/launch1.gif");
     ImageView LaunchGIF = new ImageView(launchGIF);
@@ -39,6 +42,8 @@ public class Rocket implements Operations {
     double accelFactor;
     double rocketX = 266, rocketY = 655, altitude = 0, velocity = 0;
     double backgroundX, backgroundY = -6202+800;
+    double originalBackgroundY = backgroundY, originalRocketY = rocketY;
+
     double rotatedAngle, rollAngle;
     boolean runthru = false;
     
@@ -160,6 +165,7 @@ public class Rocket implements Operations {
         Background3.setPreserveRatio(true);
 
         group.getChildren().addAll(Background1, Background2, Background3);
+        
     }
 
     @Override
@@ -217,6 +223,8 @@ public class Rocket implements Operations {
         rotatedAngle += angle;
         rollAngle += roll;
         System.out.println(backgroundY);
+        
+        
     }
 
     @Override
@@ -237,4 +245,16 @@ public class Rocket implements Operations {
     public void setPayload() {
 
     }
+
+	
+
+	@Override
+	public void crash(Pane group) {
+		
+		LaunchGIF.setFitWidth(group.getWidth());
+		LaunchGIF.setFitHeight(group.getHeight());
+		group.getChildren().addAll(LaunchGIF);
+		System.out.println("crashed");
+				
+	}
 }
