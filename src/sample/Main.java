@@ -10,7 +10,10 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -62,7 +65,7 @@ public class Main extends Application {
         Label Velocity = new Label();
         Velocity.setPrefSize(230, 10);
         Velocity.setFont(new Font("Arial", 12));
-        Velocity.setPadding(new Insets(0, 0, 0, 5));
+        Velocity.setPadding(new Insets(5, 0, 0, 5));
 
         Label Acceleration = new Label();
         Acceleration.setPrefSize(230, 10);
@@ -105,15 +108,15 @@ public class Main extends Application {
 
         VBox clusters = new VBox();
         clusters.setSpacing(5);
-        Button[] cluster = new Button[6];
+        Button[] cluster = new Button[5];
         for(int i = 0; i< cluster.length; i++){
             cluster[i] = new Button();
             cluster[i].setPrefSize(50, 20);
             cluster[i].setText(String.valueOf(i+1));
             cluster[i].setStyle("-fx-background-color:green");
             clusters.getChildren().addAll(cluster[i]);
-
         }
+        clusters.setPadding(new Insets(20, 0, 0, 0));
 
         rowA.getChildren().addAll(stats1, stats2);
         rowA.setSpacing(5);
@@ -143,14 +146,42 @@ public class Main extends Application {
         throttle.setSnapToTicks(true);
 
         Label thLabel = new Label("Throttle");
+        thLabel.setTextFill(Color.LIGHTGRAY); 
         thLabel.setPrefSize(50, 10);
         thLabel.setFont(new Font("Arial", 12));
-
+        
         VBox Throttle = new VBox(thLabel, throttle);
         Throttle.setSpacing(5);
+        
+        Slider pitch = new Slider(-2, 2, 0);
+        pitch.setPrefSize(50, 150);
+        pitch.setMajorTickUnit(1);
+        pitch.setShowTickLabels(true);
+        pitch.setOrientation(Orientation.VERTICAL);
+        pitch.setSnapToTicks(true);
+        pitch.setPadding(new Insets(5, 0, 0, 0));
 
+        Label ptLabel = new Label("Deg/s");
+        ptLabel.setTextFill(Color.LIGHTGRAY);        
+        ptLabel.setPrefSize(50, 10);
+        ptLabel.setFont(new Font("Arial", 12));
 
-        rowC.getChildren().addAll(Throttle, clusters);
+        VBox Pitchlbl = new VBox(ptLabel, pitch);
+        Throttle.setSpacing(5);
+        
+        TextArea textArea = new TextArea();
+        textArea.setWrapText(true);
+        textArea.setPrefWidth(100);
+        textArea.setPrefWidth(140);
+        
+        ScrollPane log = new ScrollPane();
+        log.setHbarPolicy(ScrollBarPolicy.NEVER);
+        log.setVbarPolicy(ScrollBarPolicy.ALWAYS);
+        log.setPrefWidth(100);
+        log.setPrefWidth(140);
+        log.setContent(textArea);
+
+        rowC.getChildren().addAll(Throttle, clusters, Pitchlbl, log);
         rowC.setSpacing(5);
 
 
@@ -191,6 +222,10 @@ public class Main extends Application {
                 Acceleration.setText("Acceleration: "+ rocket.getAccel() * 49+" m/s^2");
                 Pitch.setText("Pitch: "+ rocket.rotatedAngle +" deg");
                 Roll.setText("Roll: "+ rocket.rollAngle +" deg");
+
+                textArea.setText(rocket.logUpdate);
+                log.setContent(textArea);
+
                 for(int i = 0; i< cluster.length; i++){
                     int finalI = i;
                     cluster[i].setOnAction(new EventHandler<ActionEvent>(){
