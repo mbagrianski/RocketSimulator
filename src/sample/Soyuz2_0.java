@@ -64,12 +64,25 @@ public class Soyuz2_0 extends Rocket {
 
             if(elapsedTime > 70 && currentNUM < 1) stage();
             if(elapsedTime > 120 && currentNUM < 2) stage();
-            if(elapsedTime > 150 && currentNUM < 3) stage();        
+            if(elapsedTime > 150 && currentNUM < 3) stage();
+            
+            
+            if(velocity > 200) {
+            	logUpdate = "Throttle down for max dynamic pressure";
+            }
             
             /**Mission timeline goes here**/
 
             drawFlame(currentNUM, group);
             velocity+= accelFactor*atmosphere;
+            
+            
+            
+            if(rocketY > originalRocketY) {
+            	crash(group);
+            }else if(backgroundY < originalBackgroundY) {
+            	crash(group);
+            }
         }
         drawRocket(currentNUM, group);
         return null;
