@@ -53,27 +53,37 @@ public class Soyuz2_0 extends Rocket {
         Capsule.setPreserveRatio(true);
     }
 
-    public Group Mission(long time, Pane group) throws FileNotFoundException {
+    public Group Mission(double time, Pane group) throws FileNotFoundException {
         double atmosphere = 1;
         drawBackground(time, group);
-
+        
+        if(countdownInit) {   	
+        	elapsedTime = time-initTime -15;
+        	if(elapsedTime >= 0) launch(time);
+        }
+        
+        if(drawFlame) {
+            drawFlame(currentNUM, group);
+        }
+        
         if (launched) {
-            elapsedTime = time-startTime;
+        	countdownInit = false;
+        	elapsedTime = time-startTime;
+
             motion(0, velocity*atmosphere, rotatedAngle, rollAngle);
             if(elapsedTime > 40) atmosphere = time*time / (10.0 * time);
 
             if(elapsedTime > 70 && currentNUM < 1) stage();
-            if(elapsedTime > 120 && currentNUM < 2) stage();
-            if(elapsedTime > 150 && currentNUM < 3) stage();
+            if(elapsedTime > 150 && currentNUM < 2) stage();
+            if(elapsedTime > 200 && currentNUM < 3) stage();
             
             
             if(velocity > 200) {
             	logUpdate = "Throttle down for max dynamic pressure";
             }
-            
+            drawFlame = true;
             /**Mission timeline goes here**/
 
-            drawFlame(currentNUM, group);
             velocity+= accelFactor*atmosphere;
             
             
@@ -84,6 +94,7 @@ public class Soyuz2_0 extends Rocket {
             	crash(group);
             }
         }
+        
         drawRocket(currentNUM, group);
         return null;
     }
@@ -120,6 +131,32 @@ public class Soyuz2_0 extends Rocket {
         }
         group.getChildren().add(Flame);
     }
+    
+    @Override
+	public String getUpdate(double time) {
+		String text = "";
+
+    	if(countdownInit || launched) {
+    		if(time > -13) {
+    			text += "Autosequence start T-12.0\n";
+    		}if(time > -11) {
+    			text += "Standby for terminal count T-10\n";
+    		}if(time > -6) {
+    			text += "Go for main engine start T-5.0\n";
+    		}if(time > 0) {
+    			text += "";
+    		}if(time > -2) {
+    			text += "Throttle up 75% T-1.0\n";
+    		}if(time > 1) {
+    			text += "Liftoff  T+0.0\n";
+    		}if(time >= 5) {
+    			text += "Throttle up 95% T+5.0\n";
+    		}
+    		
+    		if(getSpeed() > 300) text += "Throttle down 50% for max dynamic pressure";
+    	}
+    	return text;
+	}
 
     private static ImageView[] imageSequence = {Stage1, Stage2atm, Stage2trns, Stage3trns, Capsuletrns, Capsule};
 
