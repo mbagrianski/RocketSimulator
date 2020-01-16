@@ -81,8 +81,13 @@ public class Main extends Application {
         Roll.setPrefSize(230, 10);
         Roll.setFont(new Font("Arial", 12));
         Roll.setPadding(new Insets(0, 0, 0, 5));
+        
+        Label Altitude = new Label();
+        Altitude.setPrefSize(230, 10);
+        Altitude.setFont(new Font("Arial", 12));
+        Altitude.setPadding(new Insets(0, 0, 0, 5));
 
-        VBox labels = new VBox(Velocity, Acceleration, Pitch, Roll);
+        VBox labels = new VBox(Velocity, Acceleration, Pitch, Roll, Altitude);
         labels.setSpacing(5);
 
         Pane stats1 = new Pane();
@@ -102,8 +107,8 @@ public class Main extends Application {
         stats1.getChildren().addAll(labels);
         stats2.getChildren().addAll(circle, rollOffset);
 
-        Button launch = new Button("Launch");
-        launch.setStyle("-fx-background-color:olive");
+        Button launch = new Button("Abort");
+        launch.setStyle("-fx-background-color:tomato");
         launch.setPrefSize(100, 50);
 
         VBox clusters = new VBox();
@@ -120,21 +125,13 @@ public class Main extends Application {
 
         rowA.getChildren().addAll(stats1, stats2);
         rowA.setSpacing(5);
-        rowA.setPadding(new Insets(4, 0, 4, 0));
+        rowA.setPadding(new Insets(0, 0, 4, 0));
 
-        Button abort = new Button("ABORT");
-        abort.setPrefSize(100, 50);
-        abort.setStyle("-fx-background-color:tomato");
-        Button statusA = new Button("statusB");
-        statusA.setPrefSize(70, 50);
-        Button statusB = new Button("statusC");
-        statusB.setPrefSize(70, 50);
-        Button statusC = new Button("statusD");
-        statusC.setPrefSize(70, 50);
-        Button statusD = new Button("statusD");
-        statusD.setPrefSize(70, 50);
-
-        rowB.getChildren().addAll(launch, statusA, statusB, statusC, statusD);
+        Button countdownInit = new Button("Initialize\nCountdown");
+        countdownInit.setPrefSize(100, 50);
+        countdownInit.setStyle("-fx-background-color:olive");
+        
+        rowB.getChildren().addAll(launch, countdownInit);
         rowB.setSpacing(4);
 
 
@@ -171,18 +168,19 @@ public class Main extends Application {
         
         TextArea textArea = new TextArea();
         textArea.setWrapText(true);
-        textArea.setPrefWidth(100);
-        textArea.setPrefWidth(140);
+        textArea.setPrefWidth(225);
+        textArea.setPrefHeight(165);
         
         ScrollPane log = new ScrollPane();
         log.setHbarPolicy(ScrollBarPolicy.NEVER);
         log.setVbarPolicy(ScrollBarPolicy.ALWAYS);
-        log.setPrefWidth(100);
-        log.setPrefWidth(140);
+        log.setPrefWidth(225);
+        log.setPrefHeight(100);
         log.setContent(textArea);
 
         rowC.getChildren().addAll(Throttle, clusters, Pitchlbl, log);
         rowC.setSpacing(5);
+        rowC.setPadding(new Insets(5, 0, 0, 0));
 
 
         //rowD.getChildren().addAll(rocket.getGIFA(), rocket.getGIFB());
@@ -212,8 +210,13 @@ public class Main extends Application {
                     @Override
                     public void handle(ActionEvent e){
                         System.out.println("Launched");
-                        rocket.launch((long) elapsedSeconds);
-                        throttle.setValue(75);
+                        rocket.launch(elapsedSeconds);
+                    }
+                });
+                countdownInit.setOnAction(new EventHandler<ActionEvent>(){
+                    @Override
+                    public void handle(ActionEvent e){
+                        rocket.countDown(elapsedSeconds);
                     }
                 });
 
@@ -222,8 +225,9 @@ public class Main extends Application {
                 Acceleration.setText("Acceleration: "+ rocket.getAccel() * 49+" m/s^2");
                 Pitch.setText("Pitch: "+ rocket.rotatedAngle +" deg");
                 Roll.setText("Roll: "+ rocket.rollAngle +" deg");
+                Altitude.setText("Altitude: "+ rocket.getAltitude() +" m");
 
-                textArea.setText(rocket.logUpdate);
+                textArea.setText(rocket.getUpdate(rocket.getTime()));
                 log.setContent(textArea);
 
                 for(int i = 0; i< cluster.length; i++){
@@ -238,7 +242,7 @@ public class Main extends Application {
                 rocketPanel.getChildren().clear();
 
                 try {
-                    rocket.Mission((long) elapsedSeconds, rocketPanel);
+                    rocket.Mission(elapsedSeconds, rocketPanel);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
