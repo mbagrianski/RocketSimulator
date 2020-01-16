@@ -15,6 +15,8 @@ public class Rocket implements Operations {
     /**public int width = 1000, height = 800; **/
     double throttleVal = 1;
     String logUpdate;
+    
+    int updateCounter = 0;
 
     Image launchGIF = new Image("sample/GIF/launch1.gif");
     ImageView LaunchGIF = new ImageView(launchGIF);
@@ -52,9 +54,9 @@ public class Rocket implements Operations {
     String type;
     private int type_num;
 
-    long startTime, elapsedTime;
+    double startTime, elapsedTime, initTime;
 
-    boolean launched = false;
+    boolean launched = false, countdownInit = false, drawFlame = false;
     private ImageView[] imageSequence;
     VBox vbox = new VBox();
 
@@ -75,7 +77,7 @@ public class Rocket implements Operations {
     }
 
     @Override
-    public Group Mission(long time, Pane group) throws FileNotFoundException {
+    public Group Mission(double time, Pane group) throws FileNotFoundException {
         this.Mission(time, group);
         return null;
     }
@@ -87,7 +89,13 @@ public class Rocket implements Operations {
 
     @Override
     public double getTime() {
-        return (Math.round(elapsedTime*100.0)/100.0);
+    	if(elapsedTime>0) {
+    		return (Math.round(elapsedTime*100.0)/100.0);
+    	}
+    	else {
+    		return (Math.round(elapsedTime)/1);
+    	}
+        
     }
 
     @Override
@@ -106,11 +114,17 @@ public class Rocket implements Operations {
     }
 
     @Override
-    public void launch(long time) {
+    public void launch(double time) {
         if(!launched){
             launched = true;
             startTime = time;
         }
+    }
+    
+    @Override
+	public void countDown(double time) {
+    countdownInit = true;
+    initTime = time;
     }
 
     @Override
@@ -150,17 +164,17 @@ public class Rocket implements Operations {
     }
 
     @Override
-    public void drawBackground(long time, Pane group) {
+    public void drawBackground(double time, Pane group) {
         Background1.setX(backgroundX);
         Background1.setY(backgroundY);
         Background1.setFitWidth(600);
         Background1.setPreserveRatio(true);
         Background2.setX(backgroundX);
-        Background2.setY(backgroundY - 120000);
+        Background2.setY(backgroundY - 1000000);
         Background2.setFitWidth(600);
-        Background2.setFitHeight(120000);
+        Background2.setFitHeight(1000000);
         Background3.setX(backgroundX);
-        Background3.setY(backgroundY - 120010 - 6912);
+        Background3.setY(backgroundY - 1000010 - 6912);
         Background3.setFitWidth(600);
         Background3.setPreserveRatio(true);
 
@@ -216,13 +230,13 @@ public class Rocket implements Operations {
             rocketX += x_shift;
             rocketY -= y_shift;
         }
-        if(rocketY <= 400 && backgroundY < 127000){
+        if(rocketY <= 400 && backgroundY < 1007000){
             backgroundX -= x_shift;
             backgroundY += y_shift;
         }
         rotatedAngle += angle;
         rollAngle += roll;
-        System.out.println(backgroundY);
+        System.out.println(rocketY);
         
         
     }
@@ -257,4 +271,24 @@ public class Rocket implements Operations {
 		System.out.println("crashed");
 				
 	}
+
+	@Override
+	public String getUpdate(double time) {
+		return this.getUpdate(time);
+	}
+
+	@Override
+	public double getAltitude() {
+        double distance = 0;
+		if(rocketY > 400){
+            distance = -rocketY+655;
+        }
+        if(rocketY <= 400 && backgroundY < 1007000){
+            distance  = backgroundY + 5402 + (655-rocketY);
+        }
+        distance = Math.round(distance*100.0)/100.0;
+        return distance; 
+	}
+
+	
 }
