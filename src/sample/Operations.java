@@ -8,19 +8,24 @@ import java.io.FileNotFoundException;
 
 public interface Operations {
     public void init();
-    public Group Mission(long time, Pane group) throws FileNotFoundException;
+    public Group Mission(double time, Pane group) throws FileNotFoundException;
 
     public String getType();
     public double getTime();
     public double getSpeed();
     public String getPos();
     public double getAccel();
+    public double getAltitude();
+    
+    public String getUpdate(double time);
 
 
-    public void launch(long time);
+    public void launch(double time);
+    public void countDown(double time);
+    
     public void drawRocket(int stage, Pane group);
     public void drawFlame(int stage, Pane group);
-    public void drawBackground(long time, Pane group);
+    public void drawBackground(double time, Pane group);
     
     public Pane getGIFA();
     public Pane setGIFA(ImageView gif);
