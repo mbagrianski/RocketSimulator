@@ -150,10 +150,14 @@ public class Soyuz2_0 extends Rocket {
     		}if(time > 1) {
     			text += "Liftoff  T+0.0\n";
     		}if(time >= 5) {
-    			text += "Throttle up 95% T+5.0\n";
-    		}
+                text += "Throttle up 95% T+5.0\n";
+            }if(time >= 15) {
+                text += "Approaching maximum dynamic pressure prepare for throttle down 60%\n";
+            }if(time >= 19) {
+                text += "Throttle down 60% T+20.0\n";
+            }
     		
-    		if(getSpeed() > 300) text += "Throttle down 50% for max dynamic pressure";
+
     	}
     	return text;
 	}

@@ -168,17 +168,16 @@ public class Main extends Application {
         
         TextArea textArea = new TextArea();
         textArea.setWrapText(true);
-        textArea.setPrefWidth(225);
+        textArea.setPrefWidth(200);
         textArea.setPrefHeight(165);
-        
+
         ScrollPane log = new ScrollPane();
         log.setHbarPolicy(ScrollBarPolicy.NEVER);
         log.setVbarPolicy(ScrollBarPolicy.ALWAYS);
         log.setPrefWidth(225);
         log.setPrefHeight(100);
-        log.setContent(textArea);
 
-        rowC.getChildren().addAll(Throttle, clusters, Pitchlbl, log);
+        rowC.getChildren().addAll(Throttle, clusters, Pitchlbl, textArea);
         rowC.setSpacing(5);
         rowC.setPadding(new Insets(5, 0, 0, 0));
 
@@ -228,6 +227,7 @@ public class Main extends Application {
                 Altitude.setText("Altitude: "+ rocket.getAltitude() +" m");
 
                 textArea.setText(rocket.getUpdate(rocket.getTime()));
+                textArea.setScrollTop(10);
                 log.setContent(textArea);
 
                 for(int i = 0; i< cluster.length; i++){
