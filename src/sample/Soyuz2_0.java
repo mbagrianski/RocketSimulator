@@ -58,7 +58,7 @@ public class Soyuz2_0 extends Rocket {
         drawBackground(time, group);
         
         if(countdownInit) {   	
-        	elapsedTime = time-initTime -15;
+        	elapsedTime = time-initTime -30;//the constant is the extra time before launch
         	if(elapsedTime >= 0) launch(time);
         }
         
@@ -137,12 +137,14 @@ public class Soyuz2_0 extends Rocket {
 		String text = "";
 
     	if(countdownInit || launched) {
+    	    if(time < 10) drawFlame = false;
     		if(time > -13) {
     			text += "Autosequence start T-12.0\n";
     		}if(time > -11) {
     			text += "Standby for terminal count T-10\n";
     		}if(time > -6) {
     			text += "Go for main engine start T-5.0\n";
+    			drawFlame = true;
     		}if(time > 0) {
     			text += "";
     		}if(time > -2) {

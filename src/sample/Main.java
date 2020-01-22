@@ -17,12 +17,15 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
@@ -34,8 +37,11 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+        String uriString = new File("C:\\Users\\mbagr\\IdeaProjects\\RocketSimulator\\src\\sample\\audio\\SST_launch.mp3").toURI().toString();
+        //for some reason this needs the absolute path. Don't know why.
+        MediaPlayer player = new MediaPlayer( new Media(uriString));
 
-        Soyuz2_0 rocket = new Soyuz2_0();
+        Soyuz2_0 rocket = new Soyuz2_0(); //create new soyuz object
         rocket.scale();
         rocket.init();
 
@@ -215,6 +221,7 @@ public class Main extends Application {
                 countdownInit.setOnAction(new EventHandler<ActionEvent>(){
                     @Override
                     public void handle(ActionEvent e){
+                        player.play();
                         rocket.countDown(elapsedSeconds);
                     }
                 });
