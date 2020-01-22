@@ -64,7 +64,7 @@ public class Rocket implements Operations {
 
 
     public Rocket(ImageView imageSequence[]) throws FileNotFoundException {
-        this.imageSequence = imageSequence;
+        this.imageSequence = imageSequence;//imagesequence is unique to each type of rocket
     }
 
     @Override

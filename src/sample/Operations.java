@@ -6,7 +6,7 @@ import javafx.scene.layout.Pane;
 
 import java.io.FileNotFoundException;
 
-public interface Operations {
+public interface Operations { //interface class with methods used in rocket.java
     public void init();
     public Group Mission(double time, Pane group) throws FileNotFoundException;
 

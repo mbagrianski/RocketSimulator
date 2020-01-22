@@ -70,7 +70,8 @@ public class Soyuz2_0 extends Rocket {
         	countdownInit = false;
         	elapsedTime = time-startTime;
 
-            motion(0, velocity*atmosphere, rotatedAngle, rollAngle);
+            motion(0, velocity*atmosphere, rotatedAngle, rollAngle);//atmosphere is a variable that
+            //increases accel. after leaving earth's atmosphere
             if(elapsedTime > 40) atmosphere = time*time / (10.0 * time);
 
             if(elapsedTime > 70 && currentNUM < 1) stage();
@@ -103,7 +104,7 @@ public class Soyuz2_0 extends Rocket {
     @Override
     public void drawFlame(int current, Pane group) {
 
-        switch (current){
+        switch (current){//draw flame differently depending on the stage
             case 0:
             	flameXdisp = -28;
             	flameYdisp = -14;
@@ -136,7 +137,7 @@ public class Soyuz2_0 extends Rocket {
 	public String getUpdate(double time) {
 		String text = "";
 
-    	if(countdownInit || launched) {
+    	if(countdownInit || launched) { //detailed mission profile would go in this method (is printed on scrollpane)
     	    if(time < 10) drawFlame = false;
     		if(time > -13) {
     			text += "Autosequence start T-12.0\n";
@@ -158,7 +159,6 @@ public class Soyuz2_0 extends Rocket {
             }if(time >= 19) {
                 text += "Throttle down 60% T+20.0\n";
             }
-    		
 
     	}
     	return text;
